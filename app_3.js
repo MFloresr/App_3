@@ -1,4 +1,6 @@
+'use strict';
 function Game(idCanvas,w,h){
+
 	var canvas = document.createElement(idCanvas);
 	document.body.appendChild(canvas);
 	var ctx = canvas.getContext('2d');
@@ -15,17 +17,19 @@ function Game(idCanvas,w,h){
 	});
 
 	document.addEventListener("keyup", function(e) {
-		_this.teclas[e.keyCode];
+		delete _this.teclas[e.keyCode];
 	});
 
 
 	this.animar = function(){
 		var derecha = 39;
 		var isquierda = 37;
-		if (_this.teclas[derecha])
-			this.paleta.moverDerecha();
-		if (_this.teclas[derecha])
-			this.paleta.moverIsquierda();
+		if (_this.teclas[derecha]){
+			_this.paleta.moverDerecha();
+		}
+		if (_this.teclas[isquierda]){
+			_this.paleta.moverIsquierda();
+		}
 		_this.pintarCanvas();
 		window.requestAnimationFrame(_this.animar,_this.canvas);
 	}
@@ -57,22 +61,22 @@ function Game(idCanvas,w,h){
 
 	}
 
-	canvasElement.moverDerecha = function(){
+	canvasElement.prototype.moverDerecha = function(){
 		if ((this.x+this.w) < this.mx){
-			this.x +=this.v;
+			this.x += this.v;
 		}	
 	}
 
-	canvasElement.moverIsquierda = function(){
+	canvasElement.prototype.moverIsquierda = function(){
 		if (this.x > 0 ){
-			this.x -=this.v;
+			this.x -= this.v;
 		}
 	}
 
 /**************************************************************/
 
 	function paleta(x,y,w,h,mx,my,v){
-		canvasElement.call(x,y,w,h,mx,my,v);
+		canvasElement.call(this, x,y,w,h,mx,my,v);
 	};
 
 	paleta.prototype = Object.create(canvasElement.prototype);
